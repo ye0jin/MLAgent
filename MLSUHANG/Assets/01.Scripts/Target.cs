@@ -5,32 +5,32 @@ using UnityEngine.UI;
 
 public class Target : MonoBehaviour
 {
-    public static Target Instance;
-
+    [Header("====================")]
     [Header("Target")]
     [SerializeField] private float speed = 80f;
     private Vector3 angle;
 
+    [Header("====================")]
     [Header("KNIFE")]
-    [SerializeField] private Transform knifeUIParent;
-    [SerializeField] private Image[] knifeUIs;
-    [SerializeField] private Image knifeUIPref;
-
-    private int knifeCnt;
-    private int currentKnifeCnt = 0;
+    [SerializeField] private Transform knifeTrm;
+    [SerializeField] private Knife knifePref;
     private List<Knife> knifeList;
 
+    /*[Header("Knife UI")]
+    [SerializeField] private Transform knifeUIParent;
+    [SerializeField] private Image[] knifeUIs;
+    [SerializeField] private Image knifeUIPref;*/
 
+    //private int knifeCnt;
+    //private int currentKnifeCnt = 0;
+    //private List<KnifeAgent> knifeList;
+
+    [Header("====================")]
     [Header("APPLE")]
     [SerializeField] private Transform appleTrm;
     [SerializeField] private Apple applePref;
-    private List<Apple> appleList;
-
-    private void Awake()
-    {
-        if(Instance != null) { print("TargetError"); }
-        Instance = this;
-    }
+    private Apple currentApple;
+    public Apple CurrentApple => currentApple;
 
     private void Start()
     {
@@ -39,11 +39,6 @@ public class Target : MonoBehaviour
 
     private void Update()
     {
-        if(currentKnifeCnt >= knifeCnt)
-        {
-
-        }
-
         transform.Rotate(speed * angle * Time.deltaTime);
     }
 
@@ -62,44 +57,39 @@ public class Target : MonoBehaviour
 
     public void SetGame()
     {
-        appleList = new List<Apple>();
         knifeList = new List<Knife>();
 
-        int appleCnt = Random.Range(1, 5);
-        knifeCnt = appleCnt;
-        currentKnifeCnt = 0;
+        int knifeCnt = Random.Range(1, 6);
 
-        for (int i = 0; i < appleCnt; ++i)
+        Apple newApple = Instantiate(applePref, appleTrm);
+        newApple.SetApple(appleTrm.localPosition);
+        currentApple = newApple;
+
+        for (int i = 0; i < knifeCnt; ++i)
         {
-            Apple newApple = Instantiate(applePref, appleTrm);
-            newApple.SetApple(appleTrm.position);
-            appleList.Add(newApple);
-
-            Instantiate(knifeUIPref, knifeUIParent);
+            Knife newKnife = Instantiate(knifePref, knifeTrm);
+            newKnife.SetKnife(knifeTrm.localPosition);
+            knifeList.Add(newKnife);
         }
 
-        knifeUIs = knifeUIParent.GetComponentsInChildren<Image>();
+        //knifeUIs = knifeUIParent.GetComponentsInChildren<Image>();
     }
 
-    public void ShootKnife(Knife k)
+    /*public void ShootKnife(KnifeAgent k)
     {
         currentKnifeCnt = Mathf.Clamp(++currentKnifeCnt, 0, knifeCnt);
         knifeUIs[currentKnifeCnt - 1].color = Color.black;
-        knifeList[currentKnifeCnt] = k; // 꽂힌 나이프 리스트에 넣어주기
-    }
+        knifeList.Add(k); // 꽂힌 나이프 리스트에 넣어주기
+    }*/
 
     public void ResetGame()
     {
-        foreach(var a in appleList)
-        {
-            Destroy(a.gameObject);
-        }
+        Destroy(currentApple.gameObject);
         foreach(var k in knifeList)
         {
             Destroy(k.gameObject);
         }
 
-        appleList.Clear();
         knifeList.Clear();
     }
 }
