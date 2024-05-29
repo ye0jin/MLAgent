@@ -7,6 +7,12 @@ TagManager:
   - Apple
   - Knife
   - Wood
+  - GameOver
+  - Red
+  - Blue
+  - Green
+  - Yellow
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -15,15 +21,15 @@ TagManager:
   - Water
   - UI
   - Knife
+  - Player
   - 
   - 
   - 
   - 
   - 
   - 
-  - 
-  - 
-  - 
+  - GameOver
+  - Target
   - 
   - 
   - 
