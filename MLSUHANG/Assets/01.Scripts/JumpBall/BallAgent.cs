@@ -35,7 +35,7 @@ public class BallAgent : Agent
     }
     public override void CollectObservations(VectorSensor sensor)
     {
-        sensor.AddObservation(transform.localPosition.y);
+        sensor.AddObservation(transform.localPosition);
         sensor.AddObservation(manager.target.localPosition);
         sensor.AddObservation((transform.localPosition - manager.target.localPosition).magnitude);
     }
